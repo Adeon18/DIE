@@ -56,14 +56,15 @@ include(cmake/CompilerWarnings.cmake)
 
 #! Project main executable source compilation
 add_executable(${PROJECT_NAME} src/main.cpp include/mt_deque.hpp
-				options_parser/options_parser.cpp options_parser/options_parser.h)
+				options_parser/options_parser.cpp options_parser/options_parser.h
+				word_count/word_count.cpp word_count/word_count.h)
 
 if (DEQUE_DEBUG)
 	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE DEQUE_DEBUG=1)
 endif()
 
 #! Put path to your project headers
-target_include_directories(${PROJECT_NAME} PRIVATE options_parser)
+target_include_directories(${PROJECT_NAME} PRIVATE options_parser word_count)
 
 #! Add external packages
 # options_parser requires boost::program_options library
