@@ -13,11 +13,11 @@ namespace fs = std::filesystem;
 
 typedef std::deque<char, std::allocator<char> > chardeque;
 
-void add_files_to_queue(mt_deque_t<fs::path>& mt_d, std::string indir) {
+void add_files_to_queue(mt_deque_t<fs::path>& mt_d_filenames, std::string indir) {
     for (auto const& dir_entry : fs::recursive_directory_iterator(indir)) {
-        mt_d.push_back(dir_entry.path());
+        mt_d_filenames.push_front(dir_entry.path());
     }
-    mt_d.push_back(fs::path(""));
+    mt_d_filenames.push_front(fs::path(""));
 }
 
 chardeque read_file_noseek(std::ifstream& fs_in) {
@@ -40,11 +40,12 @@ chardeque read_file_noseek(std::ifstream& fs_in) {
     return container;
 }
 
-void read_files_from_deque(mt_deque_t<fs::path>& mt_d_filenames, mt_deque_t<chardeque>& mt_d_file_contents) {
+void read_files_from_deque(mt_deque_t<fs::path>& mt_d_filenames, mt_deque_t<std::string>& mt_d_file_contents) {
     while (true) {
         auto file_path = mt_d_filenames.pop_back();
 
         if (file_path.empty()) {
+            mt_d_filenames.push_front(fs::path(""));
             break;
         }
 
@@ -55,11 +56,14 @@ void read_files_from_deque(mt_deque_t<fs::path>& mt_d_filenames, mt_deque_t<char
             continue;
         }
 
-        mt_d_file_contents.push_back(read_file_noseek(fs_in));
+        chardeque file_contents = read_file_noseek(fs_in);
+        std::string file_contents_str(file_contents.begin(), file_contents.end());
+
+        mt_d_file_contents.push_front(file_contents_str);
 
         fs_in.close();
     }
-
+    mt_d_file_contents.push_front("");
 }
 
 #endif // _LIST_AND_READ_HPP
