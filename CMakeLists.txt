@@ -56,7 +56,7 @@ include(cmake/CompilerWarnings.cmake)
 
 #! Project main executable source compilation
 add_executable(${PROJECT_NAME} src/main.cpp
-                include/mt_deque.hpp include/mt_unordered_map_t.h
+				mt_deque/mt_deque.hpp mt_unordered_map/mt_unordered_map_t.hpp
 				options_parser/options_parser.cpp options_parser/options_parser.h
 				word_count/word_count.cpp word_count/word_count.h)
 

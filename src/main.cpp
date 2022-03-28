@@ -6,7 +6,7 @@
 #include <iostream>
 #include <filesystem>
 #include "options_parser.h"
-#include "../include/mt_deque.hpp"
+#include "../mt_deque/mt_deque.hpp"
 #include "../list_and_read/list_and_read.hpp"
 
 namespace fs = std::filesystem;
