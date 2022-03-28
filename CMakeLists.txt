@@ -62,6 +62,10 @@ if (DEQUE_DEBUG)
 	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE DEQUE_DEBUG=1)
 endif()
 
+if (UNORDERED_MAP_DEBUG)
+	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE UNORDERED_MAP_DEBUG=1)
+endif()
+
 #! Put path to your project headers
 target_include_directories(${PROJECT_NAME} PRIVATE options_parser)
 
