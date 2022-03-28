@@ -26,13 +26,22 @@ int main() {
 
     std::thread file_list_thread(add_files_to_queue, std::ref(mt_d_filenames), indir);
     std::thread file_read_thread(read_files_from_deque, std::ref(mt_d_filenames), std::ref(mt_d_file_contents));
-    std::thread file_index_thread(index_files_from_deque, std::ref(mt_d_file_contents), std::ref(global_map));
+
+    std::vector<std::thread> file_index_thread_v;
+    for (int i = 0; i < indexing_threads; i++) {
+        file_index_thread_v.emplace_back(index_files_from_deque, std::ref(mt_d_file_contents), std::ref(global_map));
+    }
 
     file_list_thread.join();
     file_read_thread.join();
-    file_index_thread.join();
 
-    std::cout << global_map.begin()->first << " " << global_map.begin()->second << std::endl;
+    for (int i = 0; i < indexing_threads; i++) {
+        file_index_thread_v[i].join();
+    }
+
+    for (const auto& [word, count] : global_map) {
+        std::cout << word << " " << count << std::endl;
+    }
 
 	return 0;
 }
