@@ -4,9 +4,14 @@
 #include <iostream>
 #include <thread>
 #include <array>
+#include <unordered_map>
 #include "options_parser.h"
 #include "../include/mt_deque.hpp"
 #include "../include/mt_unordered_map_t.h"
+
+void die() {
+    std::cout << "DIE" << std::endl;
+}
 
 int main(int argv, char* argc[]) {
 
@@ -36,19 +41,20 @@ int main(int argv, char* argc[]) {
 
     mt_unordered_map_t<std::string , int> mt_um_t;
 
-    std::thread t2(&mt_unordered_map_t<std::string , int>::insert, &mt_um_t, std::pair<std::string, int>("Die", 2));
-    std::thread t3(&mt_unordered_map_t<std::string , int>::insert, &mt_um_t, std::pair<std::string, int>("Dead", 3));
-    std::thread t1(&mt_unordered_map_t<std::string , int>::insert, &mt_um_t, std::pair<std::string, int>("Depress", 1));
-    std::thread t4(&mt_unordered_map_t<std::string , int>::erase, &mt_um_t, "Depress");
+
+    std::unordered_map<std::string, int> map1{{"A", 1}, {"B", 2}};
+    std::unordered_map<std::string, int> map2{{"B", 2}, {"C", 2}};
+
+    std::thread t2(&mt_unordered_map_t<std::string , int>::merge, &mt_um_t, map1);
+    std::thread t1(&mt_unordered_map_t<std::string , int>::merge, &mt_um_t, map2);
 
     t2.join();
     t1.join();
-    t3.join();
-    t4.join();
+
 
     std::string arr[3] = {"Die", "Dead", "Depress"};
 
-    mt_um_t["Depress"]++;
+//    dead(mt_um_t, "Depress");
 
     std::cout << mt_um_t.size() << std::endl;
 

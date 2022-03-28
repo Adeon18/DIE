@@ -18,7 +18,7 @@ public:
     void insert(std::pair<K, V> pair);
     void erase(const K& key);
     void clear() noexcept;
-    V& operator[](const K& key);
+    void merge(const std::unordered_map<K, V> &map);
     // These functions are for iteration, they are protected by unique lock, but SHOUDN'T BE USED in multiple threads
     typename std::unordered_map<K, V>::iterator begin() noexcept;
     typename std::unordered_map<K, V>::iterator end() noexcept;
@@ -59,15 +59,6 @@ void mt_unordered_map_t<K, V>::clear() noexcept {
 }
 
 template<typename K, typename V>
-V &mt_unordered_map_t<K, V>::operator[](const K &key) {
-    std::unique_lock<std::mutex> lock(mux_m);
-#ifdef UNORDERED_MAP_DEBUG
-    std::cout << "[] operator:: Size(before call, pairs): " <<  unordered_map_m.size() << "; Key: " << key << std::endl;
-#endif
-    return unordered_map_m[key];
-}
-
-template<typename K, typename V>
 typename std::unordered_map<K, V>::iterator mt_unordered_map_t<K, V>::begin() noexcept {
     std::unique_lock<std::mutex> lock(mux_m);
     return unordered_map_m.begin();
@@ -83,6 +74,15 @@ template<typename K, typename V>
 size_t mt_unordered_map_t<K, V>::size() {
     std::unique_lock<std::mutex> lock(mux_m);
     return unordered_map_m.size();
+}
+
+template<typename K, typename V>
+void mt_unordered_map_t<K, V>::merge(const std::unordered_map<K, V> &map) {
+    std::unique_lock<std::mutex> lock(mux_m);
+
+    for (const auto & item: map) {
+        unordered_map_m[item.first] += item.second;
+    }
 }
 
 #endif //TEMPLATE_MT_UNORDERED_MAP_T_H
