@@ -1,3 +1,6 @@
+//
+// Author: Mykhailo Bondarenko
+//
 #ifndef _LIST_AND_READ_HPP
 #define _LIST_AND_READ_HPP
 
