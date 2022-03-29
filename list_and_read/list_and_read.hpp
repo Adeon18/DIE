@@ -57,7 +57,9 @@ void read_files_from_deque(mt_deque_t<fs::path>& mt_d_filenames, mt_deque_t<std:
         }
 
         chardeque file_contents = read_file_noseek(fs_in);
-        std::string file_contents_str(file_contents.begin(), file_contents.end());
+        std::string file_contents_str;
+        file_contents_str.resize(file_contents.size());
+        file_contents_str.assign(file_contents.begin(), file_contents.end());
 
         mt_d_file_contents.push_front(file_contents_str);
 

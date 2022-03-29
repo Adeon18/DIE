@@ -9,7 +9,7 @@
 #include <string>
 #include <cstring>
 #include <functional>
-#include "word_count.h"
+#include "word_count.hpp"
 #include "../mt_deque/mt_deque.hpp"
 #include "../mt_unordered_map/mt_unordered_map_t.hpp"
 

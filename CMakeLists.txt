@@ -4,13 +4,13 @@ cmake_minimum_required(VERSION 3.15)
 
 #! CHANGE YOUR PROJECT NAME
 #  It is used as your project's main executable name. 
-set(PROJECT_NAME template)
+set(PROJECT_NAME word_indexer)
 project(${PROJECT_NAME} C CXX) # project(${PROJECT_NAME} C CXX ASM)
 
 set(CMAKE_CXX_STANDARD 17)
 
 ##########################################################
-# User configurable options of the template
+# User configurable options of the word_indexer
 ##########################################################
 # Note: symbols like WARNINGS_AS_ERRORS in configuration are intentionally variables
 # and not CMake options --using options creates too much problem for students.
@@ -57,8 +57,9 @@ include(cmake/CompilerWarnings.cmake)
 #! Project main executable source compilation
 add_executable(${PROJECT_NAME} src/main.cpp
 				mt_deque/mt_deque.hpp mt_unordered_map/mt_unordered_map_t.hpp
-				options_parser/options_parser.cpp options_parser/options_parser.h
-				word_count/word_count.cpp word_count/word_count.h)
+				options_parser/options_parser.cpp options_parser/options_parser.hpp
+				word_count/word_count.cpp word_count/word_count.hpp
+				toml_parser/toml_parser.cpp toml_parser/toml_parser.hpp)
 
 if (DEQUE_DEBUG)
 	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE DEQUE_DEBUG=1)

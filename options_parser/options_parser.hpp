@@ -1,17 +1,15 @@
-#ifndef MYCAT_CONFIG_FILE_H
-#define MYCAT_CONFIG_FILE_H
+#ifndef _OPTIONS_PARSER_H
+#define _OPTIONS_PARSER_H
 
-#include <boost/program_options.hpp>
 #include <string>
 #include <exception>
 #include <stdexcept>
+#include <boost/program_options.hpp>
 
 class OptionsParseException : public std::runtime_error {
 public:
     using runtime_error::runtime_error;
 };
-
-void assert_file_exist(const std::string &f_name);
 
 class command_line_options_t {
 public:
@@ -25,18 +23,15 @@ public:
     command_line_options_t& operator=(command_line_options_t&&) = delete;
     ~command_line_options_t() = default;
 
-    [[nodiscard]] std::vector<std::string> get_filenames() const { return filenames; };
-    [[nodiscard]] bool get_A_flag() const { return A_flag; };
+    [[nodiscard]] std::string get_config_file() const { return filenames[0]; };
 
     void parse(int ac, char **av);
 private:
-    bool A_flag = false;
     std::vector<std::string> filenames;
 
     boost::program_options::variables_map var_map{};
     boost::program_options::options_description opt_conf{
-            "Config File Options:\n\tmycat [-h|--help] [-A_flag] <file1> <file2> ... <fileN>\n"};
+            "Options:\n\tword_indexer [-h|--help] <config>\n"};
 };
 
-#endif //MYCAT_CONFIG_FILE_H
-
+#endif //_OPTIONS_PARSER_H
