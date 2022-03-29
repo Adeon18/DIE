@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <deque>
+#include <array>
 
 namespace fs = std::filesystem;
 typedef std::deque<char, std::allocator<char> > chardeque;
