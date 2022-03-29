@@ -48,16 +48,8 @@ int main(int argc, char* argv[]) {
         file_index_thread_v[i].join();
     }
 
-    // for (const auto& [word, count] : global_map) {
-    //     std::cout << word << " " << count << std::endl;
-    // }
-
-    auto smth = global_map.begin();
-    for (size_t i = 0; i < 10; i++) {
-        std::cout << smth->first << " " << smth->second << std::endl;
-        ++smth;
-    }
-    
+    write_map_sorted_by_key(global_map, config.out_by_a);
+    write_map_sorted_by_value(global_map, config.out_by_n);
 
 	return 0;
 }

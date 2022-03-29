@@ -7,7 +7,7 @@
 
 enum EXIT_CODES {
     OK,
-    ERROR_OPENING_FILE,
+    ERROR_OPENING_FILE = 2,
     ERROR_WRITING_TO_FILE
 };
 

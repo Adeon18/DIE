@@ -60,7 +60,7 @@ add_executable(${PROJECT_NAME} src/main.cpp
 				options_parser/options_parser.cpp options_parser/options_parser.hpp
 				word_count/word_count.cpp word_count/word_count.hpp
 				toml_parser/toml_parser.cpp toml_parser/toml_parser.hpp
-				include/exit_codes.h)
+				include/exit_codes.hpp)
 
 if (DEQUE_DEBUG)
 	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE DEQUE_DEBUG=1)

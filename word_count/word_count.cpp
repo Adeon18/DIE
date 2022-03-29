@@ -7,15 +7,15 @@
 #include <vector>
 #include <cctype>
 #include <string>
+#include <fstream>
 #include <cstring>
+#include <iostream>
 #include <functional>
 #include "word_count.hpp"
 #include "../mt_deque/mt_deque.hpp"
-#include "../mt_unordered_map/mt_unordered_map_t.hpp"
+#include "../include/exit_codes.hpp"
 #include <boost/algorithm/string.hpp>
-#include <iostream>
-#include <fstream>
-#include "../include/exit_codes.h"
+#include "../mt_unordered_map/mt_unordered_map_t.hpp"
 
 
 /*
