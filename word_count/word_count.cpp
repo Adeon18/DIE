@@ -15,6 +15,7 @@
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <fstream>
+#include "exit_codes.h"
 
 void count_words(const std::string & contents, mt_unordered_map_t<std::string, size_t>& global_map) {
     std::unordered_map<std::string, size_t> local_map;
@@ -82,16 +83,14 @@ void write_sorted_map_to_file(mt_unordered_map_t<std::string, size_t>& global_ma
     std::ofstream output_file{file_path, std::ios::out};
     if (!output_file) {
         std::cerr << "Error opening output file" << std::endl;
-        // TODO: Add error codes enum
-        exit(1);
+        exit(ERROR_OPENING_FILE);
     }
 
     for (const auto & word: words) {
         output_file << word.first << " " << word.second << std::endl;
         if (output_file.fail()) {
             std::cerr << "Error writing to output file";
-            // TODO: Add error codes enum
-            exit(2);
+            exit(ERROR_WRITING_TO_FILE);
         }
     }
 }

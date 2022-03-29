@@ -58,7 +58,7 @@ include(cmake/CompilerWarnings.cmake)
 add_executable(${PROJECT_NAME} src/main.cpp
 				mt_deque/mt_deque.hpp mt_unordered_map/mt_unordered_map_t.hpp
 				options_parser/options_parser.cpp options_parser/options_parser.h
-				word_count/word_count.cpp word_count/word_count.h)
+				word_count/word_count.cpp word_count/word_count.h include/exit_codes.h)
 
 if (DEQUE_DEBUG)
 	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE DEQUE_DEBUG=1)
@@ -69,7 +69,7 @@ if (UNORDERED_MAP_DEBUG)
 endif()
 
 #! Put path to your project headers
-target_include_directories(${PROJECT_NAME} PRIVATE options_parser word_count)
+target_include_directories(${PROJECT_NAME} PRIVATE options_parser word_count include)
 
 #! Add external packages
 # options_parser requires boost::program_options library
