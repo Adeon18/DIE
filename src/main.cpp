@@ -6,11 +6,12 @@
 #include <thread>
 #include <iostream>
 #include <filesystem>
-#include "options_parser.hpp"
 #include "../mt_deque/mt_deque.hpp"
 #include "../word_count/word_count.hpp"
 #include "../toml_parser/toml_parser.hpp"
+#include "../time_measurer/time_measurer.hpp"
 #include "../list_and_read/list_and_read.hpp"
+#include "../options_parser/options_parser.hpp"
 #include "../mt_unordered_map/mt_unordered_map_t.hpp"
 
 int main(int argc, char* argv[]) {
@@ -28,6 +29,8 @@ int main(int argc, char* argv[]) {
     default:
         break;
     }
+
+    auto test_start_whole = time_measurer::get_current_time_fenced();
 
     mt_deque::mt_deque_t<std::filesystem::path> mt_d_filenames;
     mt_deque::mt_deque_t<std::string> mt_d_file_contents;
@@ -50,6 +53,10 @@ int main(int argc, char* argv[]) {
 
     word_count::write_map_sorted_by_key(global_map, config.out_by_a);
     word_count::write_map_sorted_by_value(global_map, config.out_by_n);
+
+    auto test_time_whole = time_measurer::get_current_time_fenced() - test_start_whole;
+
+    std::cout << "Total=" << time_measurer::to_us(test_time_whole) << std::endl;
 
 	return 0;
 }
