@@ -73,11 +73,21 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE options_parser word_count)
 
 #! Add external packages
-# options_parser requires boost::program_options library
+# options_parser requires boost::program_options. boost::algorithm needs Boost::headers
 find_package(Boost 1.71.0 COMPONENTS program_options system REQUIRED)
 target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} Boost::program_options Boost::system)
+target_link_libraries(${PROJECT_NAME} Boost::program_options Boost::system Boost::headers)
 
+#! Allow threads on linux. Source:
+#! https://stackoverflow.com/questions/34143265/undefined-reference-to-symbol-pthread-createglibc-2-2-5
+if (UNIX AND NOT APPLE)
+	SET(CMAKE_THREAD_LIBS_INIT "-lpthread")
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+	SET(CMAKE_HAVE_THREADS_LIBRARY 1)
+	SET(CMAKE_USE_WIN32_THREADS_INIT 0)
+	SET(CMAKE_USE_PTHREADS_INIT 1)
+	SET(THREADS_PREFER_PTHREAD_FLAG ON)
+endif()
 						
 ##########################################################
 # Fixed CMakeLists.txt part 
