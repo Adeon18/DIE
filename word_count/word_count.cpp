@@ -44,6 +44,7 @@ void count_words(const std::string & contents, mt_unordered_map_t<std::string, s
         first = std::next(second);
     }
 
+    local_map.erase("");
 
     global_map.merge(local_map);
 }
