@@ -7,6 +7,7 @@
 #include <deque>
 #include <iostream>
 #include <mutex>
+#include <filesystem>
 #include <condition_variable>
 
 template<typename T>
@@ -32,13 +33,24 @@ private:
 };
 
 template<typename T>
+inline size_t get_T_size(T v) {
+    if constexpr (std::is_same_v<std::string, T>) {
+        return v.length();
+    } else if constexpr (std::is_same_v<std::filesystem::path, T>) {
+        return sizeof(v) + v.string().length();
+    } else {
+        return sizeof(v);
+    }
+}
+
+template<typename T>
 void mt_deque_t<T>::push_back(const T &elem) {
     {
         std::unique_lock<std::mutex> lock(mux_m);
 #ifdef DEQUE_DEBUG
-        std::cout << "push_back: Deque size(bytes): " << deque_m.size() * sizeof(T) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
+        std::cout << "push_back: Deque size(bytes): " << deque_m.size() * get_T_size(elem) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
 #endif
-        while (deque_m.size() * sizeof(T) >= max_size_mb * 1000000) {
+        while (deque_m.size() * get_T_size(elem) >= max_size_mb * 1000000) {
             cv_full_m.wait(lock);
         }
         deque_m.push_back(elem);
@@ -51,9 +63,9 @@ void mt_deque_t<T>::push_front(const T &elem) {
     {
         std::unique_lock<std::mutex> lock(mux_m);
 #ifdef DEQUE_DEBUG
-        std::cout << "push_front: Deque size(bytes): " << deque_m.size() * sizeof(T) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
+        std::cout << "push_front: Deque size(bytes): " << deque_m.size() * get_T_size(elem) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
 #endif
-        while (deque_m.size() * sizeof(T) >= max_size_mb * 1000000) {
+        while (deque_m.size() * get_T_size(elem) >= max_size_mb * 1000000) {
             cv_full_m.wait(lock);
         }
         deque_m.push_front(elem);
@@ -73,7 +85,7 @@ T mt_deque_t<T>::pop_front() {
         front_el = deque_m.front();
         deque_m.pop_front();
 #ifdef DEQUE_DEBUG
-        std::cout << "pop_front: Deque size(bytes): " << deque_m.size() * sizeof(T) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
+        std::cout << "pop_front: Deque size(bytes): " << deque_m.size() * get_T_size(front_el) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
 #endif
     }
     cv_full_m.notify_one();
@@ -93,7 +105,7 @@ T mt_deque_t<T>::pop_back() {
         back_el = deque_m.back();
         deque_m.pop_back();
 #ifdef DEQUE_DEBUG
-        std::cout << "pop_back: Deque size(bytes): " << deque_m.size() * sizeof(T) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
+        std::cout << "pop_back: Deque size(bytes): " << deque_m.size() * get_T_size(front_el) << " Max size(bytes): " << max_size_mb * 1000000 << std::endl;
 #endif
     }
     cv_full_m.notify_one();
