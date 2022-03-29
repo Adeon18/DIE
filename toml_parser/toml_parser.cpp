@@ -121,41 +121,41 @@ void parse_ul(toml_parser::config_t& config, param_str_d_t param_str_d) {
     }
 }
 
-using namespace toml_parser;
-
-[[nodiscard]] CONFIG_READ_STATUS toml_parser::read_config(std::string filename, config_t& config) {
-    std::ifstream fs_in;
-    fs_in.open(filename, std::ifstream::in);
-    if (!(fs_in.is_open())) {
-        return STATUS_OPEN_ERROR;
-    }
-    std::string line;
-    size_t line_n = 0;
-    while (std::getline(fs_in, line)) {
-        ++line_n;
-
-        trim_commets_and_spaces(line);
-
-        if (line.size() == 0) continue;
-
-        param_str_d_t param_str_d = get_param_type_and_value(line);
-
-        if (param_str_d.name == "") continue;
-
-        if (param_str_d.type != "std::string" && !test_incorrect_chars(
-            param_str_d, line, line_n, "1234567890.-"
-        )) return STATUS_SYNTAX_ERROR;
-
-        try {
-            if (param_str_d.type == "std::string") {
-                parse_string(config, param_str_d);
-            } else if (param_str_d.type == "unsigned long int") {
-                parse_ul(config, param_str_d);
-            }
-        } catch (const std::exception& e) {
-            print_syntax_error(line, line_n, param_str_d.delim_pos + 1);
-            return STATUS_SYNTAX_ERROR;
+namespace toml_parser {
+    [[nodiscard]] CONFIG_READ_STATUS read_config(std::string filename, config_t& config) {
+        std::ifstream fs_in;
+        fs_in.open(filename, std::ifstream::in);
+        if (!(fs_in.is_open())) {
+            return STATUS_OPEN_ERROR;
         }
+        std::string line;
+        size_t line_n = 0;
+        while (std::getline(fs_in, line)) {
+            ++line_n;
+
+            trim_commets_and_spaces(line);
+
+            if (line.size() == 0) continue;
+
+            param_str_d_t param_str_d = get_param_type_and_value(line);
+
+            if (param_str_d.name == "") continue;
+
+            if (param_str_d.type != "std::string" && !test_incorrect_chars(
+                param_str_d, line, line_n, "1234567890.-"
+            )) return STATUS_SYNTAX_ERROR;
+
+            try {
+                if (param_str_d.type == "std::string") {
+                    parse_string(config, param_str_d);
+                } else if (param_str_d.type == "unsigned long int") {
+                    parse_ul(config, param_str_d);
+                }
+            } catch (const std::exception& e) {
+                print_syntax_error(line, line_n, param_str_d.delim_pos + 1);
+                return STATUS_SYNTAX_ERROR;
+            }
+        }
+        return STATUS_OK;
     }
-    return STATUS_OK;
 }

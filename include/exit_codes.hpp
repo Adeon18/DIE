@@ -1,7 +1,3 @@
-//
-// Created by iamthewalrus on 29.03.22.
-//
-
 #ifndef TEMPLATE_EXIT_CODES_H
 #define TEMPLATE_EXIT_CODES_H
 

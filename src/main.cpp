@@ -29,16 +29,16 @@ int main(int argc, char* argv[]) {
         break;
     }
 
-    mt_deque_t<std::filesystem::path> mt_d_filenames;
-    mt_deque_t<std::string> mt_d_file_contents;
-    mt_unordered_map_t<std::string, size_t> global_map;
+    mt_deque::mt_deque_t<std::filesystem::path> mt_d_filenames;
+    mt_deque::mt_deque_t<std::string> mt_d_file_contents;
+    mt_unordered_map::mt_unordered_map_t<std::string, size_t> global_map;
 
-    std::thread file_list_thread(add_files_to_queue, std::ref(mt_d_filenames), config.indir);
-    std::thread file_read_thread(read_files_from_deque, std::ref(mt_d_filenames), std::ref(mt_d_file_contents));
+    std::thread file_list_thread(list_and_read::add_files_to_queue, std::ref(mt_d_filenames), config.indir);
+    std::thread file_read_thread(list_and_read::read_files_from_deque, std::ref(mt_d_filenames), std::ref(mt_d_file_contents));
 
     std::vector<std::thread> file_index_thread_v;
     for (size_t i = 0; i < config.indexing_threads; i++) {
-        file_index_thread_v.emplace_back(index_files_from_deque, std::ref(mt_d_file_contents), std::ref(global_map));
+        file_index_thread_v.emplace_back(word_count::index_files_from_deque, std::ref(mt_d_file_contents), std::ref(global_map));
     }
 
     file_list_thread.join();
@@ -48,8 +48,8 @@ int main(int argc, char* argv[]) {
         file_index_thread_v[i].join();
     }
 
-    write_map_sorted_by_key(global_map, config.out_by_a);
-    write_map_sorted_by_value(global_map, config.out_by_n);
+    word_count::write_map_sorted_by_key(global_map, config.out_by_a);
+    word_count::write_map_sorted_by_value(global_map, config.out_by_n);
 
 	return 0;
 }
