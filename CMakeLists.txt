@@ -36,7 +36,7 @@ set(ENABLE_UBSan OFF)
 #  Info: https://github.com/google/sanitizers/wiki/AddressSanitizer
 set(ENABLE_ASAN OFF)
 #! ThreadSanitizer -- detects data races.
-set(ENABLE_TSan OFF)
+set(ENABLE_TSan ON)
 #! MemorySanitizer detects uninitialized memory reads 
 #  Info: https://github.com/google/sanitizers/wiki/MemorySanitizer
 set(ENABLE_MSAN OFF)
@@ -56,10 +56,14 @@ include(cmake/CompilerWarnings.cmake)
 
 #! Project main executable source compilation
 add_executable(${PROJECT_NAME} src/main.cpp include/mt_deque.hpp
-				options_parser/options_parser.cpp options_parser/options_parser.h)
+				options_parser/options_parser.cpp options_parser/options_parser.h include/mt_unordered_map_t.h)
 
 if (DEQUE_DEBUG)
 	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE DEQUE_DEBUG=1)
+endif()
+
+if (UNORDERED_MAP_DEBUG)
+	TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE UNORDERED_MAP_DEBUG=1)
 endif()
 
 #! Put path to your project headers
