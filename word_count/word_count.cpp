@@ -17,6 +17,10 @@
 #include <fstream>
 #include "exit_codes.h"
 
+
+/*
+ * Count individual words in a string, merge their count with the global map
+*/
 void count_words(const std::string & contents, mt_unordered_map_t<std::string, size_t>& global_map) {
     std::unordered_map<std::string, size_t> local_map;
     auto first = std::cbegin(contents);
@@ -57,6 +61,9 @@ void index_files_from_deque(mt_deque_t<std::string>& mt_d_file_contents, mt_unor
     }
 }
 
+/*
+ * Write mt_unordered_map to file sorted alphabetically by key.
+ */
 void write_map_sorted_by_key(mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
     write_sorted_map_to_file(global_map,
                              [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2){
@@ -65,6 +72,9 @@ void write_map_sorted_by_key(mt_unordered_map_t<std::string, size_t>& global_map
                              file_path);
 }
 
+/*
+ * Write mt_unordered_map to file sorted by value.
+ */
 void write_map_sorted_by_value(mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
     write_sorted_map_to_file(global_map,
                              [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2){
@@ -73,6 +83,9 @@ void write_map_sorted_by_value(mt_unordered_map_t<std::string, size_t>& global_m
                              file_path);
 }
 
+/*
+ * Write mt_unordered_map to file sorted by condition set with function f.
+ */
 void write_sorted_map_to_file(mt_unordered_map_t<std::string, size_t>& global_map,
                               std::function<bool(std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2)> f,
                               const std::string & file_path) {
