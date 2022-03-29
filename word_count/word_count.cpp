@@ -12,25 +12,33 @@
 #include "word_count.h"
 #include "../mt_deque/mt_deque.hpp"
 #include "../mt_unordered_map/mt_unordered_map_t.hpp"
+#include <boost/algorithm/string.hpp>
+#include <iostream>
+#include <fstream>
 
 void count_words(const std::string & contents, mt_unordered_map_t<std::string, size_t>& global_map) {
     std::unordered_map<std::string, size_t> local_map;
-    const char* delims = "\n\t\r\f ";
-    char* token = std::strtok(const_cast<char*>(contents.c_str()), delims);
+    auto first = std::cbegin(contents);
+    std::string delims = "\n\t\r\f ";
 
-    std::vector<const char*> split_string_vector;
-    while (token != nullptr) {
-        split_string_vector.push_back(token);
-        token = std::strtok(nullptr, delims);
+    while (first != std::cend(contents)) {
+        const auto second = std::find_first_of(first,
+                                               std::cend(contents),
+                                               std::cbegin(delims),
+                                               std::cend(delims));
+
+        if (first != second) {
+            std::string str(first, second);
+            boost::trim_if(str, [](char c) { return !std::isalpha(c); });
+            std::transform(str.begin(), str.end(), str.begin(),
+                       [](char c){ return std::tolower(c); });
+            ++local_map[str];
+        }
+
+        if (second == std::cend(contents)) break;
+        first = std::next(second);
     }
 
-    for (const auto cstr: split_string_vector) {
-        std::string str{cstr};
-        str.erase(
-                std::remove_if(str.begin(), str.end(), [](char c){ return !(::isalpha(c)); }),
-                str.end());
-        ++local_map[str];
-    }
 
     global_map.merge(local_map);
 }
@@ -45,5 +53,35 @@ void index_files_from_deque(mt_deque_t<std::string>& mt_d_file_contents, mt_unor
         }
 
         count_words(file_contents, global_map);
+    }
+}
+
+void write_map_sorted_by_key(mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
+    write_sorted_map_to_file(global_map, [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2) { return word1.first.compare(word2.first) < 0; }, file_path);
+}
+
+void write_map_sorted_by_value(mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
+    write_sorted_map_to_file(global_map, [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2) { return word1.second > word2.second; }, file_path);
+}
+
+void write_sorted_map_to_file(mt_unordered_map_t<std::string, size_t>& global_map, std::function<bool(std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2)> f, const std::string & file_path) {
+    std::vector<std::pair<std::string, size_t>> words(global_map.begin(), global_map.end());
+    // TODO: Possibly make begin() and end() const
+    std::sort(words.begin(), words.end(), f);
+
+    std::ofstream output_file{file_path, std::ios::out};
+    if (!output_file) {
+        std::cerr << "Error opening output file" << std::endl;
+        // TODO: Add error codes enum
+        exit(1);
+    }
+
+    for (const auto & word: words) {
+        output_file << word.first << " " << word.second << std::endl;
+        if (output_file.fail()) {
+            std::cerr << "Error writing to output file";
+            // TODO: Add error codes enum
+            exit(2);
+        }
     }
 }
