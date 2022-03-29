@@ -57,14 +57,24 @@ void index_files_from_deque(mt_deque_t<std::string>& mt_d_file_contents, mt_unor
 }
 
 void write_map_sorted_by_key(mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
-    write_sorted_map_to_file(global_map, [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2) { return word1.first.compare(word2.first) < 0; }, file_path);
+    write_sorted_map_to_file(global_map,
+                             [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2){
+                                        return word1.first.compare(word2.first) < 0;
+                                    },
+                             file_path);
 }
 
 void write_map_sorted_by_value(mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
-    write_sorted_map_to_file(global_map, [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2) { return word1.second > word2.second; }, file_path);
+    write_sorted_map_to_file(global_map,
+                             [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2){
+                                        return word1.second > word2.second;
+                                    },
+                             file_path);
 }
 
-void write_sorted_map_to_file(mt_unordered_map_t<std::string, size_t>& global_map, std::function<bool(std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2)> f, const std::string & file_path) {
+void write_sorted_map_to_file(mt_unordered_map_t<std::string, size_t>& global_map,
+                              std::function<bool(std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2)> f,
+                              const std::string & file_path) {
     std::vector<std::pair<std::string, size_t>> words(global_map.begin(), global_map.end());
     // TODO: Possibly make begin() and end() const
     std::sort(words.begin(), words.end(), f);
