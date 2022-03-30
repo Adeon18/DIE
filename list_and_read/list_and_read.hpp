@@ -3,6 +3,7 @@
 
 #include "../time_measurer/time_measurer.hpp"
 #include "../mt_deque/mt_deque.hpp"
+#include "../include/limits.hpp"
 #include <filesystem>
 #include <fstream>
 #include <deque>
@@ -68,8 +69,13 @@ namespace list_and_read {
             }
 
             auto measure_start = time_measurer::get_current_time_fenced();
+
             chardeque file_contents = read_file_noseek(fs_in);
-            std::string file_contents_str(file_contents.begin(), file_contents.end());
+            std::string file_contents_str;
+            if (file_contents.size() <= size_limits::FILE_SIZE_LIMIT_BYTES) {
+                file_contents_str.assign(file_contents.begin(), file_contents.end());
+            }
+
             auto total_time = time_measurer::get_current_time_fenced() - measure_start;
             time_sum.add_time(total_time);
 
