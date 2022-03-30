@@ -36,7 +36,7 @@ set(ENABLE_UBSan OFF)
 #  Info: https://github.com/google/sanitizers/wiki/AddressSanitizer
 set(ENABLE_ASAN OFF)
 #! ThreadSanitizer -- detects data races.
-set(ENABLE_TSan ON)
+set(ENABLE_TSan OFF)
 #! MemorySanitizer detects uninitialized memory reads 
 #  Info: https://github.com/google/sanitizers/wiki/MemorySanitizer
 set(ENABLE_MSAN OFF)
