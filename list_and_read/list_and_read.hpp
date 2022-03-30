@@ -73,7 +73,7 @@ namespace list_and_read {
             auto total_time = time_measurer::get_current_time_fenced() - measure_start;
             time_sum.add_time(total_time);
 
-            mt_d_file_contents.push_front(file_contents_str);
+            if (!file_contents_str.empty()) mt_d_file_contents.push_front(file_contents_str);
 
             fs_in.close();
         }

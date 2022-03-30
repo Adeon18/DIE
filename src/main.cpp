@@ -38,13 +38,13 @@ int main(int argc, char* argv[]) {
     mt_deque::mt_deque_t<std::string> mt_d_file_contents;
     mt_unordered_map::mt_unordered_map_t<std::string, size_t> global_map;
 
-    std::thread file_list_thread(list_and_read::add_files_to_queue, std::ref(mt_d_filenames), config.indir, std::ref(filenames_time_sum));
-    std::thread file_read_thread(list_and_read::read_files_from_deque, std::ref(mt_d_filenames), std::ref(mt_d_file_contents), std::ref(file_contents_time_sum));
-
     std::vector<std::thread> file_index_thread_v;
     for (size_t i = 0; i < config.indexing_threads; i++) {
         file_index_thread_v.emplace_back(word_count::index_files_from_deque, std::ref(mt_d_file_contents), std::ref(global_map));
     }
+
+    std::thread file_read_thread(list_and_read::read_files_from_deque, std::ref(mt_d_filenames), std::ref(mt_d_file_contents), std::ref(file_contents_time_sum));
+    std::thread file_list_thread(list_and_read::add_files_to_queue, std::ref(mt_d_filenames), config.indir, std::ref(filenames_time_sum));
 
     file_list_thread.join();
     file_read_thread.join();
