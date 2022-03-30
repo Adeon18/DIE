@@ -17,7 +17,7 @@ typedef std::deque<char, std::allocator<char> > chardeque;
 
 namespace list_and_read {
     void add_files_to_queue(
-        mt_deque::mt_deque_t<fs::path>& mt_d_filenames, std::string indir,
+        mt_deque::mt_deque_t<fs::path>& mt_d_filenames, const std::string &indir,
         time_measurer::mt_time_summmator_t &time_sum
     ) {
         auto measure_start = time_measurer::get_current_time_fenced();

@@ -34,7 +34,7 @@ namespace time_measurer {
         mt_time_summmator_t& operator=(const mt_time_summmator_t&) = delete;
 
         std::chrono::duration<long long, std::nano> total_time;
-        void add_time(std::chrono::duration<long long, std::nano> time) {
+        void add_time(const std::chrono::duration<long long, std::nano> &time) {
             std::unique_lock<std::mutex> lock(total_time_m);
             total_time += time;
         }
