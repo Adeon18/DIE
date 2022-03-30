@@ -1,45 +1,59 @@
 <mark>Template for your README. Remove all unused parts and instructions</mark>
 
-# Lab work <mark>NUMBER</mark>: <mark>SHORT TOPIC</mark>
-Authors (team): <mark>AUTHORS WITH GITHUB LINKS</mark><br>
-Variant: <mark>VARIANT SHOULD BE HERE</mark>
+# Lab work 3: Parallel File Indexing
+Authors (team):
+- [Mykhailo Bondarenko](https://github.com/michael-2956)
+- [Bohdan Ruban](https://github.com/iamthewalrus67)
+- [Ostap Trush](https://github.com/Adeon18)
+
+Variant: _No Variant for this lab_
 ## Prerequisites
 
-<mark>LIST LIBRARIES/TOOLS/OTHER UTILITIES THAT NEED TO BE INSTALLED (E.G. GCC, OPENMP, CMAKE ETC)</mark>
+- gcc
+- CMake
+- boost
+- Preferably a PC with multiple logical cores :D
 
 ### Compilation
 
-<mark>HOW TO COMPILE YOUR PROGRAM? (RECOMMENDED: ./comile.sh)</mark>
+_Run `./compile.sh` with the needed flags to compile the project(the binary will be in ./bin/)_
 
 ### Installation
 
-<mark>DESCRIBE THE INSTALLATION PROCESS (USE ./dependencies FOLDER)</mark>
-
-<mark>Note: For Python scripts, You must add `requirenments.txt` 
-file and add your env to the `.gitignore` file!</mark>
+1. Install all Prerequisites
+2. Libs for python script:
+```bash
+pip install -r requirements.txt
+```
 
 ### Usage
 
-<mark>PROVIDE AN EXAMPLE OF HOW TO RUN YOUR PROGRAM (IT CAN BE A_flag COMMAND LINE WITH INPUT AND EXPECTED OUTPUT)</mark>
+_The binary takes the config path as its argument._
+```bash
+./word_indexer <path_to_config_file>
+```
 
-<mark>Note: if your project needs or generates any data, media and so on -- put them
-into the data folder</mark> 
+_The config file has path to the directory to be indexed, thread count and output paths._
+```
+indir="data/to_index"     # Директорія для індексації
+out_by_a="data/res_a.txt"  # Результати, посортовані за алфавітом
+out_by_n="data/res_n.txt"  # Результати, посортовані за кількістю
+indexing_threads=3
+```
 
 ### Important!
 
-<mark>WHAT ELSE SHOULD WE KNOW ABOUT YOUR WORK? (E.G. KNOWN ISSUES, BUGS, SPECIAL BEHAVIOR ETC)</mark>
+_None for now..._
 
 ### Results
 
-<mark>DESCRIBE THE RESULTS OF THE WORK YOU DID. WHAT DID YOU LEARN OR FIND INTERESTING?</mark>
+_We have a word indexer program that can index words in parallel._
+
+_The graphs should go here..._
+
 
 # Additional tasks
-<mark>IF APPLICABLE, LIST ALL THE EXTRA FEATURES YOU ADDED. PROVIDE DETAILS<mark>
-
-# ATTENTION!
-  
-Additional tasks not listed in the previous paragraph would not be graded.
-
-Be sure to provide a complete list of authors.
-
+```
+Додаткове завдання - 1 (2 бали): дослідити залежність часу виконання від кількості потоків на різних комп’ютерах і з різними наборами параметрів.
+```
 

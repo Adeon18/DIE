@@ -1,3 +1,6 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+
 //
 // Created by iamthewalrus on 3/27/22.
 //
@@ -7,6 +10,7 @@
 
 #include <mutex>
 #include <deque>
+#include <functional>
 #include <unordered_map>
 #include "../mt_deque/mt_deque.hpp"
 #include "../mt_unordered_map/mt_unordered_map_t.hpp"
