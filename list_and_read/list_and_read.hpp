@@ -25,7 +25,7 @@ namespace list_and_read {
             auto total_time = time_measurer::get_current_time_fenced() - measure_start;
             time_sum.add_time(total_time);
 
-            mt_d_filenames.push_front(dir_entry.path());
+            if (!dir_entry.path().empty()) mt_d_filenames.push_front(dir_entry.path());
 
             measure_start = time_measurer::get_current_time_fenced();
         }
@@ -59,7 +59,7 @@ namespace list_and_read {
         while (true) {
             auto file_path = mt_d_filenames.pop_back();
 
-            if (file_path.empty()) {
+            [[unlikely]] if (file_path.empty()) {
                 mt_d_filenames.push_front(fs::path(""));
                 break;
             }
