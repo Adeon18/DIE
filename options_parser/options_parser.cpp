@@ -29,13 +29,16 @@ void command_line_options_t::parse(int ac, char **av) {
             std::cout << opt_conf << "\n";
             exit(EXIT_SUCCESS);
         }
-        if (filenames.size() != 1) {
+        if (filenames.size() > 1) {
             std::cout << "Error: Wrong number of arguments" << std::endl;
             exit(EXIT_FAILURE);
         }
-        if (!std::filesystem::exists(filenames[0])) {
+        if (filenames.size() >= 1 && !std::filesystem::exists(filenames[0])) {
             std::cout << "Error: Config file unreadible" << std::endl;
             exit(EXIT_FAILURE);
+        }
+        if (filenames.size() == 0) {
+            filenames.push_back("index.cfg");
         }
         po::notify(var_map);
     } catch (std::exception &ex) {
