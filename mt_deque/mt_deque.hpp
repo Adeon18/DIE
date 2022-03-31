@@ -13,7 +13,7 @@
 
 namespace mt_deque {
     template<typename T>
-    inline size_t get_T_size(T v) {
+    size_t get_T_size(T v) {
         if constexpr (std::is_same_v<std::string, T>) {
             return v.length();
         } else if constexpr (std::is_same_v<std::filesystem::path, T>) {
