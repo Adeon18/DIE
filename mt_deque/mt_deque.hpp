@@ -116,7 +116,7 @@ namespace mt_deque {
 
     template<typename T>
     size_t mt_deque_t<T>::size() {
-        std::unique_lock<std::mutex> lock(mux_m);
+        std::lock_guard<std::mutex> lock(mux_m);
         return deque_m.size();
     }
 }
