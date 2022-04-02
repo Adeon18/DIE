@@ -27,17 +27,12 @@ namespace word_count {
     void count_words(const std::string & contents, mt_unordered_map::mt_unordered_map_t<std::string, size_t>& global_map) {
         std::unordered_map<std::string, size_t> local_map;
         auto first = std::cbegin(contents);
-        std::string delims = "\n\t\r\f ";
 
         while (first != std::cend(contents)) {
-            const auto second = std::find_first_of(first,
-                                                std::cend(contents),
-                                                std::cbegin(delims),
-                                                std::cend(delims));
+            const auto second = std::find_if(first, std::cend(contents), ::isspace);
 
             if (first != second) {
                 std::string str(first, second);
-                boost::trim_if(str, [](char c) { return !std::isalpha(c); });
                 std::transform(str.begin(), str.end(), str.begin(),
                         [](char c){ return std::tolower(c); });
                 ++local_map[str];
@@ -82,7 +77,11 @@ namespace word_count {
     void write_map_sorted_by_value(mt_unordered_map::mt_unordered_map_t<std::string, size_t>& global_map, const std::string & file_path) {
         write_sorted_map_to_file(global_map,
                                 [](std::pair<std::string, size_t> & word1, std::pair<std::string, size_t> & word2){
-                                            return word1.second > word2.second;
+                                            if (word1.second != word2.second) {
+                                                return word1.second > word2.second;
+                                            } else {
+                                                return word1.first.compare(word2.first) < 0;
+                                            }
                                         },
                                 file_path);
     }
