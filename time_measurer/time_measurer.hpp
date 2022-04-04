@@ -24,6 +24,12 @@ namespace time_measurer {
         return std::chrono::duration_cast<std::chrono::microseconds>(d).count();
     }
 
+    template<class D>
+    inline long long to_ms(const D& d)
+    {
+        return std::chrono::duration_cast<std::chrono::milliseconds>(d).count();
+    }
+
     class mt_time_summmator_t {
     public:
         mt_time_summmator_t() {

@@ -60,10 +60,10 @@ int main(int argc, char* argv[]) {
 
     auto test_time_whole = time_measurer::get_current_time_fenced() - test_start_whole;
 
-    std::cout << "Total=" << time_measurer::to_us(test_time_whole) << std::endl;
-    std::cout << "Reading=" << time_measurer::to_us(file_contents_time_sum.total_time) << std::endl;
-    std::cout << "Finding=" << time_measurer::to_us(filenames_time_sum.total_time) << std::endl;
-    std::cout << "Writing=" << time_measurer::to_us(test_time_write) << std::endl;
+    std::cout << "Total=" << time_measurer::to_ms(test_time_whole) << std::endl;
+    std::cout << "Reading=" << time_measurer::to_ms(file_contents_time_sum.total_time) << std::endl;
+    std::cout << "Finding=" << time_measurer::to_ms(filenames_time_sum.total_time) << std::endl;
+    std::cout << "Writing=" << time_measurer::to_ms(test_time_write) << std::endl;
 
 	return 0;
 }
