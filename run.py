@@ -45,7 +45,7 @@ if __name__ == "__main__":
         process.wait()
         output_time = [int(i.decode('utf-8').split("=")[1]) for i in process.stdout.read().split()]
 
-        min_output_time = [output_time[i] if output_time[i] < min_output_time[i] else min_output_time[i] for i, _ in enumerate(min_output_time)]
+        min_output_time = output_time if min_output_time[0] > output_time[0] else min_output_time
 
         if iteration == 0:
             with open(res_n_path, 'r', encoding='latin-1') as f:
@@ -62,8 +62,8 @@ if __name__ == "__main__":
                 print("Results are NOT the same", file=sys.stderr)
                 exit(3)
 
-    print(f"MinTotal={min_output_time[0]}")
-    print(f"MinReading={min_output_time[1]}")
-    print(f"MinFinding={min_output_time[2]}")
-    print(f"MinWriting={min_output_time[3]}")
+    print(f"Total={min_output_time[0]}")
+    print(f"Reading={min_output_time[1]}")
+    print(f"Finding={min_output_time[2]}")
+    print(f"Writing={min_output_time[3]}")
     print("Results are the same")
