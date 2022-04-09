@@ -14,6 +14,7 @@ namespace mt_unordered_map {
     class mt_unordered_map_t{
     public:
         using iterator = typename std::unordered_map<K, V>::iterator;
+        using const_iterator = typename std::unordered_map<K, V>::const_iterator;
 
         mt_unordered_map_t() = default;
         ~mt_unordered_map_t() = default;
@@ -27,6 +28,8 @@ namespace mt_unordered_map {
         // These functions are NOT THREAD SAFE
         iterator begin() noexcept;
         iterator end() noexcept;
+        const_iterator cbegin() const noexcept;
+        const_iterator cend() const noexcept;
         // Thread-safe, but it is size lol
         size_t size();
 
@@ -70,6 +73,16 @@ namespace mt_unordered_map {
     template<typename K, typename V>
     typename std::unordered_map<K, V>::iterator mt_unordered_map_t<K, V>::end() noexcept {
         return unordered_map_m.end();
+    }
+
+    template<typename K, typename V>
+    typename std::unordered_map<K, V>::const_iterator mt_unordered_map_t<K, V>::cbegin() const noexcept {
+        return unordered_map_m.cbegin();
+    }
+
+    template<typename K, typename V>
+    typename std::unordered_map<K, V>::const_iterator mt_unordered_map_t<K, V>::cend() const noexcept {
+        return unordered_map_m.cend();
     }
 
     template<typename K, typename V>
