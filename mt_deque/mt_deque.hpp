@@ -83,7 +83,7 @@ namespace mt_deque {
             while (deque_m.empty()) {
                 cv_empty_m.wait(lock);
             }
-            front_el = deque_m.front();
+            front_el = std::move(deque_m.front());
             deque_m.pop_front();
     #ifdef DEQUE_DEBUG
             std::cout << "pop_front: Deque size(bytes): " << deque_m.size() * get_T_size(front_el) << " Max size(bytes): " << size_limits::DEQUE_SIZE_LIMIT_BYTES << std::endl;
@@ -103,7 +103,7 @@ namespace mt_deque {
             while (deque_m.empty()) {
                 cv_empty_m.wait(lock);
             }
-            back_el = deque_m.back();
+            back_el = std::move(deque_m.back());
             deque_m.pop_back();
     #ifdef DEQUE_DEBUG
             std::cout << "pop_back: Deque size(bytes): " << deque_m.size() * get_T_size(front_el) << " Max size(bytes): " << size_limits::DEQUE_SIZE_LIMIT_BYTES << std::endl;
