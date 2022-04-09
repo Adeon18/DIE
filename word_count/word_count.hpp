@@ -10,6 +10,7 @@
 
 #include <mutex>
 #include <deque>
+#include <vector>
 #include <fstream>
 #include <functional>
 #include <unordered_map>
@@ -36,9 +37,8 @@ namespace word_count {
     */
     template <typename F>
     void write_sorted_map_to_file(mt_unordered_map_t<std::string, size_t>& global_map,
-                                  F f,
-                                  const std::string & file_path) {
-        std::vector<std::pair<std::string, size_t>> words(global_map.cbegin(), global_map.cend());
+                                  F f, const std::string & file_path) {
+        std::vector<std::pair<std::string, size_t> > words(global_map.cbegin(), global_map.cend());
         std::sort(words.begin(), words.end(), f);
 
         std::ofstream output_file{file_path, std::ios::out};
